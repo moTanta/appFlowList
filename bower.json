@@ -1,0 +1,24 @@
+{
+  "name": "service",
+  "version": "0.0.1",
+  "homepage": "www.google.com",
+  "authors": [
+    "o"
+  ],
+  "main": "app.js",
+  "license": "free",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-bootstrap": "~0.10.0",
+    "angular-route": "~1.2.13",
+    "angular": "~1.2.13",
+    "bootstrap": "~3.1.1"
+  }
+}

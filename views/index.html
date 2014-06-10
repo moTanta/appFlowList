@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html  lang="en" ng-app="services">
+  <head>
+    <title>Service Manager</title>
+    <base href="/">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.css">
+    <link href="/views/p/favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://link/to/html5shiv.js"></script>
+    <![endif]-->
+
+    <style> 
+    .dl-horizontal { dd { .clearfix();}}    
+    #viewWrap {width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+    #editWrapTitle { word-wrap: break-word; }
+    </style> 
+
+<!--     <link rel="stylesheet" href="style.css" /> -->
+  </head>
+  <body>
+    <div class="container">
+      <h1>Référentiel des Flux</h1>
+      <div ng-view></div>
+    </div><!-- end of container -->
+    <script src="/components/angular/angular.js"></script>
+    <script src="/components/angular-route/angular-route.js"></script>
+    <script src="/components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="/components/jquery/dist/jquery.js"></script>
+    <script src="/components/bootstrap/dist/js/bootstrap.js"></script>
+    
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/factory.js"></script>
+    <script src="js/filters.js"></script>
+  </body>
+</html>

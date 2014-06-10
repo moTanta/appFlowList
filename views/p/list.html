@@ -1,0 +1,900 @@
+<!-- ========= PAGE HEADER ============== -->
+
+<p ng-show="showMessage"> {{ message }}</p>
+<ul class="inline">
+  <li ng-if="services.length == 0">Il n'y a aucun Flux</li>
+  <li ng-if="services.length == 1">Il y a {{ services.length }} flux.</li>
+  <li ng-if="services.length > 1">Il y a {{ services.length }} flux.</li>
+</ul>
+
+<!-- ========= FILTER ============== -->
+
+    <div class="col-sm-3 col-xs-12 col-lg-3">
+      <form class="form-search">
+          <div class="input-group">
+              <input type="text" class="form-control " placeholder="Recherche..." ng-model="query">
+              <span class="input-group-btn">
+                  <button type="submit" class="btn btn-search">Filtrer</button>
+              </span>
+          </div>
+      </form>
+    </div>
+  <a class="btn btn-info" ng-click="add()"><i class="glyphicon-plus glyphicon"></i> </a>
+
+<!-- ========= FLOWS LIST TABLE ============== -->
+<table class="table table-striped" class="table table-hover" class="table table-condensed" ng-show="services.length >= 1" >
+  <thead>
+    <tr>
+      <th ng-repeat="header in headers"><a href="#" ng-click="columnSort.sortColumn=headers[$index];columnSort.reverse=!columnSort.reverse">{{ headers[$index] | capitalise }}</a></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="service in services |  orderBy:columnSort.sortColumn:columnSort.reverse | filter: query">
+        <td>{{ service.numero }}</td>
+        <td>{{ service.type }} </td>
+        <td>{{ service.application }}</td>
+        <td>{{ service.clients }}</td>
+
+        <td>
+          <a class="btn btn-info" ng-click="view(service)"><i class="glyphicon-eye-open glyphicon"></i> </a>
+          <a class="btn btn-warning" ng-click="edit(service)"><i class="glyphicon-pencil glyphicon"></i> </a>
+          <a class="btn btn-danger" href="#" ng-click="delete(service)"><i class="glyphicon-trash glyphicon"></i> </a>
+        </td>
+        
+      </tr>
+    </tbody>
+  </table>
+
+<!-- ========= ADD FLOW MODAL ============== -->
+
+  <script type="text/ng-template" id="addServiceModal" />
+   <div modal="serviceAdd">
+      <div class="modal-header">
+          <h3>Ajouter un Flux</h3>
+      </div>
+      
+      <div class="span9"> Pour plus de détails sur le modèle des données cliquez<a href="https://194.4.233.51/confluence/pages/viewpage.action?pageId=29066037" target="_blank"> ici</a>
+      </div> 
+      
+      <div class="modal-body">
+        <form name="myForm" role="form" class="form-horizontal" ng-submit="addService()" ng-model="addForm">
+        
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="inputNumero" >Numero <span style="color:#FF0000">*
+            </span></label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="inputNumero" ng-model="form.add.numero" name="numero" placeholder="1, 2, 3 ..." required />
+              <span class="error" ng-show="myForm.numero.$error.required" style="color:#FFA500">Champs à remplir!</span><br>
+            </div>
+          </div>      
+
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputApplication">Application<span style="color:#FF0000">*
+            </span></label>
+            <div class="col-sm-6">
+              <select ng-model="form.add.application" name="application" required>
+                <option value="">Choisir</option>
+                <option value="AIS">AIS</option>
+                <option value="AIS-ADG">AIS-ADG</option>
+                <option value="AIS-CB">AIS-CB</option>
+                <option value="AIS-CRMI">AIS-CRMI</option>
+                <option value="AIS-EADSL">AIS-EADSL</option>
+                <option value="AIS-IRC">AIS-IRC</option>
+                <option value="AIS-ISIS-V2">AIS-ISIS-V2</option>
+                <option value="AIS-MAIL">AIS-MAIL</option>
+                <option value="AIS-OPP">AIS-OPP</option>
+                <option value="AIS-OPPFAI">AIS-OPPFAI</option>
+                <option value="AIS-PCRM">AIS-PCRM</option>
+                <option value="AIS-PFAI">AIS-PFAI</option>
+                <option value="AIS-PTVI">AIS-PTVI</option>
+                <option value="AIS-SE">AIS-SE</option>
+                <option value="AIS-SVOD">AIS-SVOD</option>
+                <option value="AIS-VEL">AIS-VEL</option>
+                <option value="AIS-VEL2">AIS-VEL2</option>
+                <option value="AIS?InterfaceABStore">AIS?InterfaceABStore</option>
+                <option value="BDDPe">BDDPe</option>
+                <option value="BRED">BRED</option>
+                <option value="BRIQUE-DOC">BRIQUE-DOC</option>
+                <option value="BTAO">BTAO</option>
+                <option value="BTAOC">BTAOC</option>
+                <option value="BTAOV">BTAOV</option>
+                <option value="BUS">BUS</option>
+                <option value="CGA">CGA</option>
+                <option value="CGAWEB">CGAWEB</option>
+                <option value="CGAWEB-SVOD">CGAWEB-SVOD</option>
+                <option value="CONVERGENCE">CONVERGENCE</option>
+                <option value="CRESUS">CRESUS</option>
+                <option value="DARTY">DARTY</option>
+                <option value="DET">DET</option>
+                <option value="DIALOGUE">DIALOGUE</option>
+                <option value="Distributeur">Distributeur</option>
+                <option value="DOCAPOST">DOCAPOST</option>
+                <option value="Eligibilite">Eligibilite</option>
+                <option value="FAI-BYTEL">FAI-BYTEL</option>
+                <option value="GEN-IWD">GEN-IWD</option>
+                <option value="Gestion DRM">Gestion DRM</option>
+                <option value="HORUS">HORUS</option>
+                <option value="ICARE">ICARE</option>
+                <option value="IHMCRC">IHMCRC</option>
+                <option value="INT-COURRIER">INT-COURRIER</option>
+                <option value="INT-DOCAPOST">INT-DOCAPOST</option>
+                <option value="IWD">IWD</option>
+                <option value="LOC">LOC</option>
+                <option value="LOC?">LOC?</option>
+                <option value="MAEA">MAEA</option>
+                <option value="MCOS">MCOS</option>
+                <option value="MDC">MDC</option>
+                <option value="MICCRO">MICCRO</option>
+                <option value="NEO">NEO</option>
+                <option value="ORANGE">ORANGE</option>
+                <option value="OSIRIS">OSIRIS</option>
+                <option value="PASS">PASS</option>
+                <option value="PASS-ICARE">PASS-ICARE</option>
+                <option value="POINT RELAIS">POINT RELAIS</option>
+                <option value="PROG+">PROG+</option>
+                <option value="QAS">QAS</option>
+                <option value="RCU">RCU</option>
+                <option value="RCU-EUREKA">RCU-EUREKA</option>
+                <option value="RCU-FC">RCU-FC</option>
+                <option value="RCU-RCUM">RCU-RCUM</option>
+                <option value="RCU-RO">RCU-RO</option>
+                <option value="RCU-SUT">RCU-SUT</option>
+                <option value="RECOMMANDATIONS OFFRES">RECOMMANDATIONS OFFRES</option>
+                <option value="SFR">SFR</option>
+                <option value="SGE">SGE</option>
+                <option value="SIEBEL">SIEBEL</option>
+                <option value="SIEBEL-EMA">SIEBEL-EMA</option>
+                <option value="SiebelEMA">SiebelEMA</option>
+                <option value="SIP">SIP</option>
+                <option value="SVI">SVI</option>
+                <option value="TVI">TVI</option>
+                <option value="WDIST">WDIST</option>
+                <option value="WEC">WEC</option>
+                <option value="WEC?">WEC?</option>
+                <option value="WECT">WECT</option>
+                <option value="WED">WED</option>
+                <option value="WSC">WSC</option>
+                <option value="WSVOD">WSVOD</option>
+              </select>
+            </div>
+          </div>  
+          
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="inputName">Nom <span style="color:#FF0000">*
+            </span></label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputName" ng-model="form.add.name" name="name" placeholder="Nom" required>
+              <span class="error" ng-show="myForm.name.$error.required" style="color:#FFA500">Champs à remplir!</span><br>              
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputClients">Clients <span style="color:#FF0000">*
+            </span></label>
+            <div class="col-sm-6">
+              <select ng-model="form.add.clients" name="clients" multiple required>
+                <option value="AIS">AIS</option>
+                <option value="AIS-ADG">AIS-ADG</option>
+                <option value="AIS-CB">AIS-CB</option>
+                <option value="AIS-CRMI">AIS-CRMI</option>
+                <option value="AIS-EADSL">AIS-EADSL</option>
+                <option value="AIS-IRC">AIS-IRC</option>
+                <option value="AIS-ISIS-V2">AIS-ISIS-V2</option>
+                <option value="AIS-MAIL">AIS-MAIL</option>
+                <option value="AIS-OPP">AIS-OPP</option>
+                <option value="AIS-OPPFAI">AIS-OPPFAI</option>
+                <option value="AIS-PCRM">AIS-PCRM</option>
+                <option value="AIS-PFAI">AIS-PFAI</option>
+                <option value="AIS-PTVI">AIS-PTVI</option>
+                <option value="AIS-SE">AIS-SE</option>
+                <option value="AIS-SVOD">AIS-SVOD</option>
+                <option value="AIS-VEL">AIS-VEL</option>
+                <option value="AIS-VEL2">AIS-VEL2</option>
+                <option value="AIS?InterfaceABStore">AIS?InterfaceABStore</option>
+                <option value="BDDPe">BDDPe</option>
+                <option value="BRED">BRED</option>
+                <option value="BRIQUE-DOC">BRIQUE-DOC</option>
+                <option value="BTAO">BTAO</option>
+                <option value="BTAOC">BTAOC</option>
+                <option value="BTAOV">BTAOV</option>
+                <option value="BUS">BUS</option>
+                <option value="CGA">CGA</option>
+                <option value="CGAWEB">CGAWEB</option>
+                <option value="CGAWEB-SVOD">CGAWEB-SVOD</option>
+                <option value="CONVERGENCE">CONVERGENCE</option>
+                <option value="CRESUS">CRESUS</option>
+                <option value="DARTY">DARTY</option>
+                <option value="DET">DET</option>
+                <option value="DIALOGUE">DIALOGUE</option>
+                <option value="Distributeur">Distributeur</option>
+                <option value="DOCAPOST">DOCAPOST</option>
+                <option value="Eligibilite">Eligibilite</option>
+                <option value="FAI-BYTEL">FAI-BYTEL</option>
+                <option value="GEN-IWD">GEN-IWD</option>
+                <option value="Gestion DRM">Gestion DRM</option>
+                <option value="HORUS">HORUS</option>
+                <option value="ICARE">ICARE</option>
+                <option value="IHMCRC">IHMCRC</option>
+                <option value="INT-COURRIER">INT-COURRIER</option>
+                <option value="INT-DOCAPOST">INT-DOCAPOST</option>
+                <option value="IWD">IWD</option>
+                <option value="LOC">LOC</option>
+                <option value="LOC?">LOC?</option>
+                <option value="MAEA">MAEA</option>
+                <option value="MCOS">MCOS</option>
+                <option value="MDC">MDC</option>
+                <option value="MICCRO">MICCRO</option>
+                <option value="NEO">NEO</option>
+                <option value="ORANGE">ORANGE</option>
+                <option value="OSIRIS">OSIRIS</option>
+                <option value="PASS">PASS</option>
+                <option value="PASS-ICARE">PASS-ICARE</option>
+                <option value="POINT RELAIS">POINT RELAIS</option>
+                <option value="PROG+">PROG+</option>
+                <option value="QAS">QAS</option>
+                <option value="RCU">RCU</option>
+                <option value="RCU-EUREKA">RCU-EUREKA</option>
+                <option value="RCU-FC">RCU-FC</option>
+                <option value="RCU-RCUM">RCU-RCUM</option>
+                <option value="RCU-RO">RCU-RO</option>
+                <option value="RCU-SUT">RCU-SUT</option>
+                <option value="RECOMMANDATIONS OFFRES">RECOMMANDATIONS OFFRES</option>
+                <option value="SFR">SFR</option>
+                <option value="SGE">SGE</option>
+                <option value="SIEBEL">SIEBEL</option>
+                <option value="SIEBEL-EMA">SIEBEL-EMA</option>
+                <option value="SiebelEMA">SiebelEMA</option>
+                <option value="SIP">SIP</option>
+                <option value="SVI">SVI</option>
+                <option value="TVI">TVI</option>
+                <option value="WDIST">WDIST</option>
+                <option value="WEC">WEC</option>
+                <option value="WEC?">WEC?</option>
+                <option value="WECT">WECT</option>
+                <option value="WED">WED</option>
+                <option value="WSC">WSC</option>
+                <option value="WSVOD">WSVOD</option>
+              </select>
+            </div>
+          </div> 
+          
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputType">Type</label>
+            <div class="col-sm-6">
+              <select ng-model="form.add.type" name="type" >
+                <option value="soa">  Soa</option>
+                <option value="fichier">  Fichier</option>
+              </select>
+            </div>
+          </div> 
+                         
+          <div class="form-group">
+            <label for="inputComment" class="col-sm-2 control-label" >Commentaire</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputComment" ng-model="form.add.comment" name="comment" placeholder="Commentaire">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputDescription">Description</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputDescription" ng-model="form.add.description" name="description" placeholder="Description">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputDocumentaion">Documentation</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputDocumentaion" ng-model="form.add.documentation" name="documentation" placeholder="Documentation">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputimpactKiss">Impact KISS</label>
+            <div class="col-sm-6">
+              <select ng-model="form.add.impactKiss" name="impactKiss" >
+                <option value="indéterminé">Indéterminé</option>
+                <option value="supprimé">Supprimé</option>
+                <option value="remplacé">Remplacé</option>
+                <option value="conservé">Conservé</option>
+                <option value="ajouté">Ajouté</option>
+                <option value="inutilisé">Inutilisé</option>
+                <option value="redirigé">Redirigé</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputMrc">MRC</label>
+            <div class="col-sm-6">
+              <input type="radio" ng-model="form.add.mrc" name="mrc" value="true">  True
+              <input type="radio" ng-model="form.add.mrc" name="mrc" value="false">  False
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputProbleme">Problème</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputProbleme" ng-model="form.add.probleme" name="probleme" placeholder="">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputDate">Date</label>
+            <div class="col-sm-6">
+              <input type="date" class="form-control" id="inputDate" ng-model="form.add.date" name="date" placeholder="">
+            </div>
+          </div>  
+                  
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputServiceRemplacant">Service Remplaçant</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="inputServiceRemplacant" ng-model="form.add.serviceRemplacant" name="serviceRemplacant" placeholder="123...">
+            </div>
+          </div>            
+          
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputVuDansKiss">Vue dans KISS</label>
+            <div class="col-sm-6">
+              <input type="radio" ng-model="form.add.vuDansKiss" name="vuDansKiss" value="true">  True
+              <input type="radio" ng-model="form.add.vuDansKiss" name="vuDansKiss" value="false">  False
+            </div>
+          </div>          
+          
+          <div class="form-group" ng-show="form.add.type == 'soa'">
+            <label class="control-label col-sm-2" for="inputSoaDpPublication">Soa dpPublication</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputSoaDpPublication" ng-model="form.add.soa.dpPublication" name="dpPublication" placeholder="">
+            </div>
+          </div>                  
+
+          <div class="form-group" ng-show="form.add.type == 'soa'">
+            <label class="control-label col-sm-2" for="inputSoaBackProt">Soa backProt</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputSoaBackProt" ng-model="form.add.soa.backProt" name="backProt" placeholder="">
+            </div>
+          </div>           
+
+          <div class="form-group" ng-show="form.add.type == 'soa'">
+            <label class="control-label col-sm-2" for="inputSoaDpGateway">Soa dpGateway</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputSoaDpGateway" ng-model="form.add.soa.dpGateway" name="backProt" placeholder="">
+            </div>
+          </div>           
+
+          <div class="form-group" ng-show="form.add.type == 'soa'">
+            <label class="control-label col-sm-2" for="inputSoaFrontProt">Soa frontProt</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputSoaFrontProt" ng-model="form.add.soa.frontProt" name="backProt" placeholder="">
+            </div>
+          </div>       
+
+          <div class="form-group" ng-show="form.add.type == 'soa'">
+            <label class="control-label col-sm-2" for="inputSoaPublieBus">Soa publieBus</label>
+            <div class="col-sm-6">
+              <input type="radio" ng-model="form.add.soa.publieBus" name="publieBus" value="true">  True
+              <input type="radio" ng-model="form.add.soa.publieBus" name="publieBus" value="false">  False
+            </div>
+          </div>  
+
+          <div class="form-group" ng-show="form.add.type == 'soa'">
+            <label class="control-label col-sm-2" for="inputSoaRemoteUrl">Soa remoteUrl</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputSoaRemoteUrl" ng-model="form.add.soa.remoteUrl" name="remoteUrl" placeholder="">
+            </div>
+          </div>      
+
+          <div class="form-group" ng-show="form.add.type == 'soa'">
+            <label class="control-label col-sm-2" for="inputSoaSoapBody">Soa soapBody</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputSoaSoapBody" ng-model="form.add.soa.soapBody" name="soapBody" placeholder="">
+            </div>
+          </div>      
+
+          <div class="form-group" ng-show="form.add.type == 'soa'">
+            <label class="control-label col-sm-2" for="inputSoaChainageAval">Soa chainageAval</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputSoaChainageAval" ng-model="form.add.soa.chainageAval" name="chainageAval" placeholder="">
+            </div>
+          </div>  
+
+          <div class="form-group" ng-show="form.add.type == 'soa'">
+            <label class="control-label col-sm-2" for="inputSoaSoapAction">Soa soapAction</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputSoaSoapAction" ng-model="form.add.soa.soapAction" name="soapAction" placeholder="">
+            </div>
+          </div>      
+
+          <div class="form-group" ng-show="form.add.type == 'fichier'">
+            <label class="control-label col-sm-2" for="inputFichierFormat">Fichier format</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputFichierFormat" ng-model="form.add.fichier.format" name="format" placeholder="">
+            </div>
+          </div>  
+
+          <div class="form-group" ng-show="form.add.type == 'fichier'">
+            <label class="control-label col-sm-2" for="inputFichierTransfertXfb">Fichier transfertXfb</label>
+            <div class="col-sm-6">
+              <input type="radio" ng-model="form.add.fichier.transfertXfb" name="transfertXfb" value="true">  True
+              <input type="radio" ng-model="form.add.fichier.transfertXfb" name="transfertXfb" value="false">  False
+            </div>
+          </div>    
+
+          <div class="form-group" ng-show="form.add.type == 'fichier'">
+            <label class="control-label col-sm-2" for="inputFichierTransfertProt">Fichier transfertProt</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputFichierTransfertProt" ng-model="form.add.fichier.transfertProt" name="transfertProt" placeholder="">
+            </div>
+          </div> 
+
+          <div class="modal-footer">
+              <button type="submit" class="btn btn-info"><i class="icon-plus icon-white"></i> Ajouter Flux</button>
+              <button class="btn btn-warning cancel" ng-click="cancel()">Cancel</button>
+          </div>
+        
+        </form>
+      </div>
+
+   </div>
+  </script>
+
+<!-- ========= DETAIL FLOW MODAL ============== -->
+
+  <script type="text/ng-template" id="viewServiceModal" />
+    <div modal="serviceView">
+      <div class="modal-header">
+          <h3>Numero: {{ service.numero }}</h3>
+      </div>
+
+      <div class="span9"> Pour plus de détails sur le modèle des données cliquez<a href="https://194.4.233.51/confluence/pages/viewpage.action?pageId=29066037" target="_blank"> ici</a>
+      </div> 
+
+      <div class="modal-body">
+        <dl class="dl-horizontal">
+          <dt ng-repeat="header in allheaders ">{{ header | capitalise}}:</dt>
+            <dd>{{ service.numero || " - " }}</dd>
+            <dd id="viewWrap" title="{{service.application}}">{{ service.application || " - " }}</dd>
+            <dd id="viewWrap" title="{{service.name}}">{{ service.name || " - " }}</dd>
+            <dd id="viewWrap" title="{{service.clients}}">{{ service.clients || " - " }}</dd>
+            <dd>{{ service.type || " - " }}</dd>
+            <dd id="viewWrap" title="{{service.comment}}">{{ service.comment || " - " }}</dd>
+            <dd id="viewWrap" title="{{service.description}}">{{ service.description || " - " }}</dd>
+            <dd id="viewWrap" title="{{service.documentation}}">{{ service.documentation || " - " }}</dd>
+            <dd id="viewWrap">{{ service.impactKiss || " - " }}</dd>
+            <dd id="viewWrap">{{ service.mrc || " - " }}</dd>
+            <dd id="viewWrap" title="{{service.probleme}}">{{ service.probleme || " - " }}</dd>
+            <dd id="viewWrap">{{ service.date || " - " }}</dd>
+            <dd id="viewWrap" title="{{service.serviceRemplacant}}">{{ service.serviceRemplacant || " - " }}</dd>
+            <dd id="viewWrap">{{ service.vuDansKiss || " - " }}</dd>
+            
+            <dd id="viewWrap" title="{{service.soa.dpPublication}}">{{ service.soa.dpPublication || " - " }}</dd>
+            <dd id="viewWrap" title="{{service.soa.backProt}}">{{ service.soa.backProt || " - " }}</dd>
+            <dd id="viewWrap" title="{{service.soa.dpGateway}}">{{ service.soa.dpGateway || " - " }}</dd>
+            <dd id="viewWrap" title="{{service.soa.frontProt}}">{{ service.soa.frontProt || " - " }}</dd>
+            <dd id="viewWrap" title="{{service.soa.publieBus}}">{{ service.soa.publieBus || " - " }}</dd>
+            <dd id="viewWrap" title="{{service.soa.remoteUrl}}">{{ service.soa.remoteUrl || " - " }}</dd>
+            <dd id="viewWrap" title="{{service.soa.soapBody}}">{{ service.soa.soapBody || " - " }}</dd>
+            <dd id="viewWrap" title="{{service.soa.chainageAval}}">{{ service.soa.chainageAval || " - " }}</dd>
+            <dd id="viewWrap" title="{{service.soa.soapAction}}">{{ service.soa.soapAction || " - " }}</dd>
+            
+            <dd id="viewWrap" title="{{service.fichier.format}}">{{ service.fichier.format || " - " }}</dd>
+            <dd id="viewWrap" title="{{service.fichier.transfertXfb}}">{{ service.fichier.transfertXfb || " - " }}</dd>
+            <dd id="viewWrap" title="{{service.fichier.transfertProt}}">{{ service.fichier.transfertProt || " - " }}</dd>  
+          </dt>
+        </dl>
+      </div>
+
+      <div class="modal-footer">
+          <button class="btn btn-warning cancel" ng-click="close()">Fermer</button>
+      </div>
+    </div>
+  </script>
+
+<!-- ========= EDIT FLOW MOFDAL ============= -->
+
+  <script type="text/ng-template" id="editServiceModal" />
+    <div modal="serviceEdit">
+      <div class="modal-header">
+          <h3 id="editWrapTitle" title="{{service.name}}">Edit - {{ name }}</h3>
+      </div>
+
+      <div class="span9"><span> Pour plus de détails sur le modèle des données cliquez<a href="https://194.4.233.51/confluence/pages/viewpage.action?pageId=29066037" target="_blank"> ici</a><span>
+      </div> 
+      
+      <div class="modal-body">
+        <form name="myForm" role="form" class="form-horizontal" ng-submit="editService()" ng-model="addForm">
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="inputNumero">Numéro <span style="color:#FF0000">*
+            </span></label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="inputNumero" ng-model="form.edit.numero" name="numero" placeholder="" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputApplication">Application<span style="color:#FF0000">*
+            </span></label>
+            <div class="col-sm-6">
+              <select ng-model="form.edit.application" name="application" required>
+                <option value="">Choisir</option>
+                <option value="AIS">AIS</option>
+                <option value="AIS-ADG">AIS-ADG</option>
+                <option value="AIS-CB">AIS-CB</option>
+                <option value="AIS-CRMI">AIS-CRMI</option>
+                <option value="AIS-EADSL">AIS-EADSL</option>
+                <option value="AIS-IRC">AIS-IRC</option>
+                <option value="AIS-ISIS-V2">AIS-ISIS-V2</option>
+                <option value="AIS-MAIL">AIS-MAIL</option>
+                <option value="AIS-OPP">AIS-OPP</option>
+                <option value="AIS-OPPFAI">AIS-OPPFAI</option>
+                <option value="AIS-PCRM">AIS-PCRM</option>
+                <option value="AIS-PFAI">AIS-PFAI</option>
+                <option value="AIS-PTVI">AIS-PTVI</option>
+                <option value="AIS-SE">AIS-SE</option>
+                <option value="AIS-SVOD">AIS-SVOD</option>
+                <option value="AIS-VEL">AIS-VEL</option>
+                <option value="AIS-VEL2">AIS-VEL2</option>
+                <option value="AIS?InterfaceABStore">AIS?InterfaceABStore</option>
+                <option value="BDDPe">BDDPe</option>
+                <option value="BRED">BRED</option>
+                <option value="BRIQUE-DOC">BRIQUE-DOC</option>
+                <option value="BTAO">BTAO</option>
+                <option value="BTAOC">BTAOC</option>
+                <option value="BTAOV">BTAOV</option>
+                <option value="BUS">BUS</option>
+                <option value="CGA">CGA</option>
+                <option value="CGAWEB">CGAWEB</option>
+                <option value="CGAWEB-SVOD">CGAWEB-SVOD</option>
+                <option value="CONVERGENCE">CONVERGENCE</option>
+                <option value="CRESUS">CRESUS</option>
+                <option value="DARTY">DARTY</option>
+                <option value="DET">DET</option>
+                <option value="DIALOGUE">DIALOGUE</option>
+                <option value="Distributeur">Distributeur</option>
+                <option value="DOCAPOST">DOCAPOST</option>
+                <option value="Eligibilite">Eligibilite</option>
+                <option value="FAI-BYTEL">FAI-BYTEL</option>
+                <option value="GEN-IWD">GEN-IWD</option>
+                <option value="Gestion DRM">Gestion DRM</option>
+                <option value="HORUS">HORUS</option>
+                <option value="ICARE">ICARE</option>
+                <option value="IHMCRC">IHMCRC</option>
+                <option value="INT-COURRIER">INT-COURRIER</option>
+                <option value="INT-DOCAPOST">INT-DOCAPOST</option>
+                <option value="IWD">IWD</option>
+                <option value="LOC">LOC</option>
+                <option value="LOC?">LOC?</option>
+                <option value="MAEA">MAEA</option>
+                <option value="MCOS">MCOS</option>
+                <option value="MDC">MDC</option>
+                <option value="MICCRO">MICCRO</option>
+                <option value="NEO">NEO</option>
+                <option value="ORANGE">ORANGE</option>
+                <option value="OSIRIS">OSIRIS</option>
+                <option value="PASS">PASS</option>
+                <option value="PASS-ICARE">PASS-ICARE</option>
+                <option value="POINT RELAIS">POINT RELAIS</option>
+                <option value="PROG+">PROG+</option>
+                <option value="QAS">QAS</option>
+                <option value="RCU">RCU</option>
+                <option value="RCU-EUREKA">RCU-EUREKA</option>
+                <option value="RCU-FC">RCU-FC</option>
+                <option value="RCU-RCUM">RCU-RCUM</option>
+                <option value="RCU-RO">RCU-RO</option>
+                <option value="RCU-SUT">RCU-SUT</option>
+                <option value="RECOMMANDATIONS OFFRES">RECOMMANDATIONS OFFRES</option>
+                <option value="SFR">SFR</option>
+                <option value="SGE">SGE</option>
+                <option value="SIEBEL">SIEBEL</option>
+                <option value="SIEBEL-EMA">SIEBEL-EMA</option>
+                <option value="SiebelEMA">SiebelEMA</option>
+                <option value="SIP">SIP</option>
+                <option value="SVI">SVI</option>
+                <option value="TVI">TVI</option>
+                <option value="WDIST">WDIST</option>
+                <option value="WEC">WEC</option>
+                <option value="WEC?">WEC?</option>
+                <option value="WECT">WECT</option>
+                <option value="WED">WED</option>
+                <option value="WSC">WSC</option>
+                <option value="WSVOD">WSVOD</option>
+              </select>
+            </div>
+          </div> 
+
+          <div class="form-group">
+            <label for="inputName" class="col-sm-2 control-label">Nom <span style="color:#FF0000">*
+            </span></label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputName" ng-model="form.edit.name" name="name" placeholder="" required>
+            </div>
+          </div> 
+
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputClients">Clients <span style="color:#FF0000">*
+            </span></label>
+            <div class="col-sm-6">
+              <select ng-model="form.edit.clients" name="clients" multiple required>
+                <option value="AIS">AIS</option>
+                <option value="AIS-ADG">AIS-ADG</option>
+                <option value="AIS-CB">AIS-CB</option>
+                <option value="AIS-CRMI">AIS-CRMI</option>
+                <option value="AIS-EADSL">AIS-EADSL</option>
+                <option value="AIS-IRC">AIS-IRC</option>
+                <option value="AIS-ISIS-V2">AIS-ISIS-V2</option>
+                <option value="AIS-MAIL">AIS-MAIL</option>
+                <option value="AIS-OPP">AIS-OPP</option>
+                <option value="AIS-OPPFAI">AIS-OPPFAI</option>
+                <option value="AIS-PCRM">AIS-PCRM</option>
+                <option value="AIS-PFAI">AIS-PFAI</option>
+                <option value="AIS-PTVI">AIS-PTVI</option>
+                <option value="AIS-SE">AIS-SE</option>
+                <option value="AIS-SVOD">AIS-SVOD</option>
+                <option value="AIS-VEL">AIS-VEL</option>
+                <option value="AIS-VEL2">AIS-VEL2</option>
+                <option value="AIS?InterfaceABStore">AIS?InterfaceABStore</option>
+                <option value="BDDPe">BDDPe</option>
+                <option value="BRED">BRED</option>
+                <option value="BRIQUE-DOC">BRIQUE-DOC</option>
+                <option value="BTAO">BTAO</option>
+                <option value="BTAOC">BTAOC</option>
+                <option value="BTAOV">BTAOV</option>
+                <option value="BUS">BUS</option>
+                <option value="CGA">CGA</option>
+                <option value="CGAWEB">CGAWEB</option>
+                <option value="CGAWEB-SVOD">CGAWEB-SVOD</option>
+                <option value="CONVERGENCE">CONVERGENCE</option>
+                <option value="CRESUS">CRESUS</option>
+                <option value="DARTY">DARTY</option>
+                <option value="DET">DET</option>
+                <option value="DIALOGUE">DIALOGUE</option>
+                <option value="Distributeur">Distributeur</option>
+                <option value="DOCAPOST">DOCAPOST</option>
+                <option value="Eligibilite">Eligibilite</option>
+                <option value="FAI-BYTEL">FAI-BYTEL</option>
+                <option value="GEN-IWD">GEN-IWD</option>
+                <option value="Gestion DRM">Gestion DRM</option>
+                <option value="HORUS">HORUS</option>
+                <option value="ICARE">ICARE</option>
+                <option value="IHMCRC">IHMCRC</option>
+                <option value="INT-COURRIER">INT-COURRIER</option>
+                <option value="INT-DOCAPOST">INT-DOCAPOST</option>
+                <option value="IWD">IWD</option>
+                <option value="LOC">LOC</option>
+                <option value="LOC?">LOC?</option>
+                <option value="MAEA">MAEA</option>
+                <option value="MCOS">MCOS</option>
+                <option value="MDC">MDC</option>
+                <option value="MICCRO">MICCRO</option>
+                <option value="NEO">NEO</option>
+                <option value="ORANGE">ORANGE</option>
+                <option value="OSIRIS">OSIRIS</option>
+                <option value="PASS">PASS</option>
+                <option value="PASS-ICARE">PASS-ICARE</option>
+                <option value="POINT RELAIS">POINT RELAIS</option>
+                <option value="PROG+">PROG+</option>
+                <option value="QAS">QAS</option>
+                <option value="RCU">RCU</option>
+                <option value="RCU-EUREKA">RCU-EUREKA</option>
+                <option value="RCU-FC">RCU-FC</option>
+                <option value="RCU-RCUM">RCU-RCUM</option>
+                <option value="RCU-RO">RCU-RO</option>
+                <option value="RCU-SUT">RCU-SUT</option>
+                <option value="RECOMMANDATIONS OFFRES">RECOMMANDATIONS OFFRES</option>
+                <option value="SFR">SFR</option>
+                <option value="SGE">SGE</option>
+                <option value="SIEBEL">SIEBEL</option>
+                <option value="SIEBEL-EMA">SIEBEL-EMA</option>
+                <option value="SiebelEMA">SiebelEMA</option>
+                <option value="SIP">SIP</option>
+                <option value="SVI">SVI</option>
+                <option value="TVI">TVI</option>
+                <option value="WDIST">WDIST</option>
+                <option value="WEC">WEC</option>
+                <option value="WEC?">WEC?</option>
+                <option value="WECT">WECT</option>
+                <option value="WED">WED</option>
+                <option value="WSC">WSC</option>
+                <option value="WSVOD">WSVOD</option>
+              </select>
+            </div>
+          </div> 
+
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputType">Type</label>
+            <div class="col-sm-6">
+              <select ng-model="form.edit.type" name="type" >
+                <option value="soa">  Soa</option>
+                <option value="fichier">  Fichier</option>
+              </select>
+            </div>
+          </div>   
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="inputComment">Commentaire</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputComment" ng-model="form.edit.comment" name="comment" placeholder="Commentaire">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputDescription">Description</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputDescription" ng-model="form.edit.description" name="description" placeholder="Description">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputDocumentaion">Documentation</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputDocumentaion" ng-model="form.edit.documentation" name="documentation" placeholder="Documentation">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputimpactKiss">Impact KISS</label>
+            <div class="col-sm-6">
+              <select ng-model="form.edit.impactKiss" name="impactKiss" >
+                <option value="indéterminé">Indéterminé</option>
+                <option value="supprimé">Supprimé</option>
+                <option value="remplacé">Remplacé</option>
+                <option value="conservé">Conservé</option>
+                <option value="ajouté">Ajouté</option>
+                <option value="inutilisé">Inutilisé</option>
+                <option value="redirigé">Redirigé</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputMrc">MRC</label>
+            <div class="col-sm-6">
+              <input type="radio" ng-model="form.edit.mrc" name="mrc" value="true">  True
+              <input type="radio" ng-model="form.edit.mrc" name="mrc" value="false">  False
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputProbleme">Problème</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputProbleme" ng-model="form.edit.probleme" name="probleme" placeholder="">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputDate">Date</label>
+            <div class="col-sm-6">
+              <input type="date" class="form-control" id="inputDate" ng-model="form.edit.date" name="date" placeholder="">
+            </div>
+          </div>   
+
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputServiceRemplacant">Service Remplaçant</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputServiceRemplacant" ng-model="form.edit.serviceRemplacant" name="serviceRemplacant" placeholder="">
+            </div>
+          </div>            
+           
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="inputVuDansKiss">Vue dans KISS</label>
+            <div class="col-sm-6">
+              <input type="radio" ng-model="form.edit.vuDansKiss" name="vuDansKiss" value="true">  True
+              <input type="radio" ng-model="form.edit.vuDansKiss" name="vuDansKiss" value="false">  False
+            </div>
+          </div>            
+
+          <div class="form-group" ng-show="form.edit.type == 'soa'">
+            <label class="control-label col-sm-2" for="inputSoaDpPublication">Soa dpPublication</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputSoaDpPublication" ng-model="form.edit.soa.dpPublication" name="dpPublication" placeholder="">
+            </div>
+          </div>      
+
+          <div class="form-group" ng-show="form.edit.type == 'soa'">
+            <label class="control-label col-sm-2" for="inputSoaBackProt">Soa backProt</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputSoaBackProt" ng-model="form.edit.soa.backProt" name="backProt" placeholder="">
+            </div>
+          </div>
+
+          <div class="form-group" ng-show="form.edit.type == 'soa'">
+            <label class="control-label col-sm-2" for="inputSoaDpGateway">Soa dpGateway</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputSoaDpGateway" ng-model="form.edit.soa.dpGateway" name="dpGateway" placeholder="">
+            </div>
+          </div>      
+
+          <div class="form-group" ng-show="form.edit.type == 'soa'">
+            <label class="control-label col-sm-2" for="inputSoaFrontProt">Soa frontProt</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputSoaFrontProt" ng-model="form.edit.soa.frontProt" name="frontProt" placeholder="">
+            </div>
+          </div> 
+
+          <div class="form-group" ng-show="form.edit.type == 'soa'">
+            <label class="control-label col-sm-2" for="inputSoaPublieBus">Soa publieBus</label>
+            <div class="col-sm-6">
+              <input type="radio" ng-model="form.edit.publieBus" name="publieBus" value="true">  True
+              <input type="radio" ng-model="form.edit.publieBus" name="publieBus" value="false">  False
+            </div>
+          </div>
+
+          <div class="form-group" ng-show="form.edit.type == 'soa'">
+            <label class="control-label col-sm-2" for="inputSoaRemoteUrl">Soa remoteUrl</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputSoaRemoteUrl" ng-model="form.edit.soa.remoteUrl" name="remoteUrl" placeholder="">
+            </div>
+          </div>      
+
+          <div class="form-group" ng-show="form.edit.type == 'soa'">
+            <label class="control-label col-sm-2" for="inputSoaSoapBody">Soa soapBody</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputSoaSoapBody" ng-model="form.edit.soa.soapBody" name="soapBody" placeholder="">
+            </div>
+          </div>      
+
+          <div class="form-group" ng-show="form.edit.type == 'soa'">
+            <label class="control-label col-sm-2" for="inputSoaChainageAval">Soa chainageAval</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputSoaChainageAval" ng-model="form.edit.soa.chainageAval" name="chainageAval" placeholder="">
+            </div>
+          </div>     
+
+          <div class="form-group" ng-show="form.edit.type == 'soa'">
+            <label class="control-label col-sm-2" for="inputSoaSoapAction">Soa soapAction</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputSoaSoapAction" ng-model="form.edit.soa.soapAction" name="soapAction" placeholder="">
+            </div>
+          </div>   
+
+          <div class="form-group" ng-show="form.edit.type == 'fichier'">
+            <label class="control-label col-sm-2" for="inputFichierFormat">Fichier format</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputFichierFormat" ng-model="form.edit.fichier.format" name="format" placeholder="">
+            </div>
+          </div>  
+
+          <div class="form-group" ng-show="form.edit.type == 'fichier'">
+            <label class="control-label col-sm-2" for="inputFichierTransfertXfb">Fichier transfertXfb</label>
+            <div class="col-sm-6">
+              <input type="radio" ng-model="form.edit.transfertXfb" name="transfertXfb" value="true">  True
+              <input type="radio" ng-model="form.edit.transfertXfb" name="transfertXfb" value="false">  False
+            </div>
+          </div>     
+
+          <div class="form-group"ng-show="form.edit.type == 'fichier'">
+            <label class="control-label col-sm-2" for="inputFichierTransfertProt">Fichier transfertProt</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="inputFichierTransfertProt" ng-model="form.edit.fichier.transfertProt" name="transfertProt" placeholder="">
+            </div>
+          </div>
+
+          <div class="modal-footer">
+              <button type="submit" class="btn btn-info"><i class="icon-plus icon-white"></i> Enregistrer Les Modification </button>
+              <button class="btn btn-warning cancel" ng-click="cancel()">Cancel</button>
+          </div>
+
+        </form>
+      </div>
+
+      </div>
+    </div>
+  </script>
+  
+<!-- ========= DELETE FLOW MODAL ============== -->
+
+  <script type="text/ng-template" id="deleteServiceModal" />
+    <div modal="serviceDelete">
+      <div class="modal-header">
+          <h3>Confirmation</h3>
+      </div>
+      <div class="modal-body">
+        Êtes vous sûr de vouloir supprimer ce Flux  {{ service.numero }}
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger ok" ng-click="deleteService()">OK</button>
+        <button class="btn btn-warning cancel" ng-click="cancel()">Cancel</button>
+      </div>
+  </div>
+</script>
