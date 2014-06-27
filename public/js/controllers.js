@@ -1,7 +1,7 @@
 'use strict';
 function ListCtrl($scope, $modal, serviceFactory) {
-  $scope.headers = ["numero", "type", "application", "clients", ""];
-  $scope.columnSort = { sortColumn: 'numero', reverse: false };
+  $scope.headers = ["ref", "type", "application", "clients", ""];
+  $scope.columnSort = { sortColumn: 'ref', reverse: false };
 
   serviceFactory.getServices().success(function(services) {
     $scope.services = services;
@@ -70,7 +70,7 @@ var addServiceModalCtrl = function($scope, $http, $modalInstance, $window, servi
 
 var viewServiceModalCtrl = function($scope, $modalInstance, service) {
   $scope.allheaders = [  
-  "numero", // Because I already got it in Modal Title  
+  "ref", // Because I already got it in Modal Title  
   "application", 
   "name",
   "clients",
@@ -113,7 +113,7 @@ var editServiceModalCtrl = function($scope, $modalInstance, $window, service, se
   $scope.form = {};
   $scope.allheaders = [  
   
-  "numero", 
+  "ref", 
   "application", 
   "name",
   "clients",
@@ -177,4 +177,4 @@ var deleteServiceModalCtrl = function($scope, $route, $modalInstance, $window, s
   };
 };
 
-var numeroError = element(by.binding('myForm.numero.$error'));
+var numeroError = element(by.binding('myForm.ref.$error'));

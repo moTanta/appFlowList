@@ -2,7 +2,7 @@ var mongoose = require('mongoose')
 , Schema = mongoose.Schema;
 
 var ServiceSchema = new Schema({
-  numero: {type: Number},
+  ref: {type: Number},
   application : {type : String /*required: true, */},
   name: {type: String/*, required: true, trim: true*/},
   clients:  {type : Array /*required: true, */},
@@ -75,7 +75,7 @@ exports.add = function(req, res) {
 //    var dpPublication = req.body.soa.dpPublication;
     service = new ServiceModel(req.body
       
-      /*numero: req.body.numero,
+      /*ref: req.body.ref,
       application: req.body.application,
       name: req.body.name,
       clients: req.body.clients,
@@ -121,7 +121,7 @@ exports.edit = function (req, res) {
   if (id) {
     ServiceModel.findById(id, { upsert: true }, function (err, service) {
       
-      service.numero = req.body.numero;
+      service.ref = req.body.ref;
       service.application = req.body.application;
       service.name = req.body.name;
       service.clients = req.body.clients;

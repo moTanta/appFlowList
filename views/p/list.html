@@ -30,7 +30,7 @@
   </thead>
   <tbody>
     <tr ng-repeat="service in services |  orderBy:columnSort.sortColumn:columnSort.reverse | filter: query">
-        <td>{{ service.numero }}</td>
+        <td>{{ service.ref }}</td>
         <td>{{ service.type }} </td>
         <td>{{ service.application }}</td>
         <td>{{ service.clients }}</td>
@@ -60,11 +60,11 @@
         <form name="myForm" role="form" class="form-horizontal" ng-submit="addService()" ng-model="addForm">
         
           <div class="form-group">
-            <label class="col-sm-2 control-label" for="inputNumero" >Numero <span style="color:#FF0000">*
+            <label class="col-sm-2 control-label" for="inputNumero" >Ref <span style="color:#FF0000">*
             </span></label>
             <div class="col-sm-6">
-              <input type="number" class="form-control" id="inputNumero" ng-model="form.add.numero" name="numero" placeholder="1, 2, 3 ..." required />
-              <span class="error" ng-show="myForm.numero.$error.required" style="color:#FFA500">Champs à remplir!</span><br>
+              <input type="number" class="form-control" id="inputNumero" ng-model="form.add.ref" name="ref" placeholder="1, 2, 3 ..." required />
+              <span class="error" ng-show="myForm.ref.$error.required" style="color:#FFA500">Champs à remplir!</span><br>
             </div>
           </div>      
 
@@ -443,7 +443,7 @@
   <script type="text/ng-template" id="viewServiceModal" />
     <div modal="serviceView">
       <div class="modal-header">
-          <h3>Numero: {{ service.numero }}</h3>
+          <h3>Ref: {{ service.ref }}</h3>
       </div>
 
       <div class="span9"> Pour plus de détails sur le modèle des données cliquez<a href="https://194.4.233.51/confluence/pages/viewpage.action?pageId=29066037" target="_blank"> ici</a>
@@ -452,7 +452,7 @@
       <div class="modal-body">
         <dl class="dl-horizontal">
           <dt ng-repeat="header in allheaders ">{{ header | capitalise}}:</dt>
-            <dd>{{ service.numero || " - " }}</dd>
+            <dd>{{ service.ref || " - " }}</dd>
             <dd id="viewWrap" title="{{service.application}}">{{ service.application || " - " }}</dd>
             <dd id="viewWrap" title="{{service.name}}">{{ service.name || " - " }}</dd>
             <dd id="viewWrap" title="{{service.clients}}">{{ service.clients || " - " }}</dd>
@@ -505,10 +505,10 @@
         <form name="myForm" role="form" class="form-horizontal" ng-submit="editService()" ng-model="addForm">
 
           <div class="form-group">
-            <label class="col-sm-2 control-label" for="inputNumero">Numéro <span style="color:#FF0000">*
+            <label class="col-sm-2 control-label" for="inputNumero">Ref <span style="color:#FF0000">*
             </span></label>
             <div class="col-sm-6">
-              <input type="number" class="form-control" id="inputNumero" ng-model="form.edit.numero" name="numero" placeholder="" required>
+              <input type="number" class="form-control" id="inputNumero" ng-model="form.edit.ref" name="ref" placeholder="" required>
             </div>
           </div>
 
@@ -890,7 +890,7 @@
           <h3>Confirmation</h3>
       </div>
       <div class="modal-body">
-        Êtes vous sûr de vouloir supprimer ce Flux  {{ service.numero }}
+        Êtes vous sûr de vouloir supprimer ce Flux  {{ service.ref }}
       </div>
       <div class="modal-footer">
         <button class="btn btn-danger ok" ng-click="deleteService()">OK</button>
